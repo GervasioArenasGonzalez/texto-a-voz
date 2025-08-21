@@ -1,5 +1,6 @@
 from newspaper import Article
 import nltk
+import gtts 
 
 #nltk.download('punkt')
 #nltk.download('punkt_tab')
@@ -12,3 +13,17 @@ article.parse()
 texto=article.text
 
 oraciones= nltk.sent_tokenize(texto, language='spanish')
+oraciones_copia=oraciones[:]
+fragmentos=[]
+
+while oraciones_copia:
+    fragmento=''
+    for oracion in oraciones_copia:
+        fragmento=fragmento+oracion
+        oraciones_copia.remove(oracion)
+        if len(fragmento)>200:
+            break
+    fragmentos.append(fragmento)
+
+print('aura')
+
