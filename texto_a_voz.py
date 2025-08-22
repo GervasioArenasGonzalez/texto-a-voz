@@ -6,6 +6,7 @@ from pydub import AudioSegment
 #nltk.download('punkt')
 #nltk.download('punkt_tab')
 os.makedirs("audios", exist_ok=True)
+os.chdir(r'C:\Users\Pc\Desktop\proyectos\texto_a_voz')
 url='https://ve.scielo.org/scielo.php?pid=S0378-18442005001000004&script=sci_arttext'
 article=Article(url)
 
@@ -39,11 +40,14 @@ for fragmento in fragmentos:
 
 #mezclo todos los audios en uno solo llamado final.mp3
 combinado=AudioSegment.empty()
-for i in range(len(fragmentos)):
-    audio=AudioSegment.from_mp3(f'audios/archivo{i}.mp3')
+for i in range(1,len(fragmentos)+1):
+    ruta=rf'C:\Users\Pc\Desktop\proyectos\texto_a_voz\audios\archivo{i}.mp3'
+    audio=AudioSegment.from_mp3(ruta)
     combinado=combinado+audio
 combinado.export('audios/final.mp3', format='mp3')
 
 #elimino todos los audios temporales
 for i in range(1,len(fragmentos)+1):
     os.remove(f'audios/archivo{i}.mp3')
+
+print('Ya esta listo el archivo final con todo el texto convertido a mp3.')
