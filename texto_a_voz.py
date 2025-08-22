@@ -1,21 +1,26 @@
+import nltk , os
 from newspaper import Article
-import nltk
-import gtts 
+from gtts import gTTS 
+from pydub import AudioSegment
 
 #nltk.download('punkt')
 #nltk.download('punkt_tab')
-
+os.makedirs("audios", exist_ok=True)
 url='https://ve.scielo.org/scielo.php?pid=S0378-18442005001000004&script=sci_arttext'
 article=Article(url)
 
+#obtengo el texto de la url
 article.download()
 article.parse()
 texto=article.text
 
+#creo dos listas, una con las oraciones del texto separadas
+#la otra vacia para llenarla con fragmentos de texto
 oraciones= nltk.sent_tokenize(texto, language='spanish')
 oraciones_copia=oraciones[:]
 fragmentos=[]
 
+#me creo cada fragmento (conjunto de varias oraciones,que no supere 200 caracteres)
 while oraciones_copia:
     fragmento=''
     for oracion in oraciones_copia:
@@ -25,5 +30,20 @@ while oraciones_copia:
             break
     fragmentos.append(fragmento)
 
-print('aura')
+#creo un archivo mp3 por cada fragmento
+i=0
+for fragmento in fragmentos:
+    i+=1
+    gtts1=gTTS(text=fragmento,lang='es')
+    gtts1.save(f'audios/archivo{i}.mp3')
 
+#mezclo todos los audios en uno solo llamado final.mp3
+combinado=AudioSegment.empty()
+for i in range(len(fragmentos)):
+    audio=AudioSegment.from_mp3(f'audios/archivo{i}.mp3')
+    combinado=combinado+audio
+combinado.export('audios/final.mp3', format='mp3')
+
+#elimino todos los audios temporales
+for i in range(1,len(fragmentos)+1):
+    os.remove(f'audios/archivo{i}.mp3')
