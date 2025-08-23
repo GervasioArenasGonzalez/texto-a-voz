@@ -5,7 +5,6 @@ from pydub import AudioSegment
 
 #nltk.download('punkt')
 #nltk.download('punkt_tab')
-os.makedirs("audios", exist_ok=True)
 #url(ejemplo)='https://ve.scielo.org/scielo.php?pid=S0378-18442005001000004&script=sci_arttext'
 article=Article(input('Introduce la url'))
 
